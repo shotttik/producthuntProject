@@ -1,10 +1,26 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 	<head>
 	<title>Homepage</title>
 	</head>
+	{% for product in products %}
+		<div class="row">
+			<div class="col-2">
+				<img height="200px" width="200px" src="{{ product.image.url }}" class="image-fluid"/>
+			</div>
+			<div class="col-6">
+				<h1>{{ product.title }}</h1>
+				<p>{{ product.summary }}</p>
+			</div>
+			<div class="col-4">
+				<a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}"><button class="btn btn-outline-primary btn-lg bt-block">Vote <img src="{% static 'up-arrow.png' %}"/> {{ product.votes_total }}</button></a>
+			</div>
+		</div>
+			<form id="upvote{{ product.id }}" method="POST" action="{% url 'upvote' product.id %}">
+	{% csrf_token %}
+		<input type="hidden">
+	</form>
+	{% endfor %}
 
-
-	<h1>ITs a homepage</h1>
 {% endblock %}
